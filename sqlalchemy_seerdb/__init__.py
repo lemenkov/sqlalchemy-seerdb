@@ -19,4 +19,4 @@ from sqlalchemy_seerdb.seerdb import SeerdbDialect
 
 __all__ = ['SeerdbDialect', '__version__']
 
-__version__ = '0.2.2'
+__version__ = '0.3.0'
