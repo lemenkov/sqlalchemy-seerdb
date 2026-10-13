@@ -69,10 +69,15 @@ jobs:
           # commits every statement unless told otherwise, and SQLAlchemy's
           # transactions would mean nothing.
           args = dialect().create_connect_args(url)[1]
+          # fetch_lobs is feature-detected in the dialect: it is present (False)
+          # only with seerdb >= 3.0 and absent on older drivers, which the
+          # dialect supports on purpose. Pop it so this check covers both.
+          fetch_lobs = args.pop('fetch_lobs', None)
           assert args == {
               'host': 'h', 'port': 1521, 'user': 'u', 'password': 'p',
               'service_name': 'XE', 'timeout': 5000, 'autocommit': False,
           }, args
+          assert fetch_lobs in (None, False), fetch_lobs
           assert isinstance(args['timeout'], int), 'query args must be coerced'
           print('entry point OK:', dialect.__module__ + '.' + dialect.__name__)
           PY
